@@ -99,8 +99,13 @@ export default class BatteryTimeExtension extends Extension {
         let remaining = (this._proxy.State === UPower.DeviceState.CHARGING) ? this._proxy.TimeToFull : this._proxy.TimeToEmpty
         let hours = remaining / 3600;
         let mins = remaining % 3600 / 60;
+
+        let formattedLabel = _('%d\u2009%%').format(this._proxy.Percentage);
+        if(remaining)
+            formattedLabel += _(' - %d:%02d').format(hours,mins);
+        
         this.set({
-            title: remaining ? _('%d:%02d').format(hours,mins) : _('%d\u2009%%').format(this._proxy.Percentage),
+            title: formattedLabel,
             fallback_icon_name: this._proxy.IconName,
             gicon,
         });
